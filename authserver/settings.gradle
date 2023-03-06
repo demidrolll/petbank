@@ -1,1 +1,2 @@
 rootProject.name = 'authserver'
+authorizationServerVersion = '1.0.1'
