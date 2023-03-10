@@ -1,13 +1,17 @@
 package com.demidrolll.pet.bank.gateway.web.controller;
 
+import com.demidrolll.pet.bank.gateway.web.model.Article;
+import java.util.List;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class ArticlesController {
 
-  @GetMapping("/articles")
-  public String[] getArticles() {
-    return new String[] { "Article 1", "Article 2", "Article 3" };
+  @QueryMapping("getArticles")
+  public List<Article> getArticles() {
+    return List.of(new Article("article 1"), new Article("article 2"), new Article("article 3"));
   }
 }
