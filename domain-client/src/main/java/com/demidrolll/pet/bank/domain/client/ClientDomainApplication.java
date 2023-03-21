@@ -9,13 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ClientDomainApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(
-        new Class[]{
-            ClientDomainApplication.class,
-            GrpcServerAutoConfiguration.class,
-            GrpcServerFactoryAutoConfiguration.class
-        },
-        args
-    );
+    SpringApplication.run(ClientDomainApplication.class, args);
   }
 }
