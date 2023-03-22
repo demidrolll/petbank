@@ -1,7 +1,28 @@
+scalar Date
+
 type Query {
-    getArticles: [Article]
+    createClient(request: CreateClientRequest!): CreateClientResponse
 }
 
-type Article {
-    title: String
+input CreateClientRequest {
+    firstName: String!
+    lastName: String!
+    middleName: String
+    sex: Sex!
+    birthDate: Date
+}
+
+type CreateClientResponse {
+    result: Result
+}
+
+enum Result {
+    SUCCESS
+    FAIL
+}
+
+enum Sex {
+    MAN
+    WOMAN
+    OTHER
 }

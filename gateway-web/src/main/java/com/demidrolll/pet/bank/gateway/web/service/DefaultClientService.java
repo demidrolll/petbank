@@ -4,7 +4,10 @@ import com.demidrolll.pet.bank.gateway.web.model.CreateClientRequest;
 import com.demidrolll.pet.bank.gateway.web.model.CreateClientResponse;
 import reactor.core.publisher.Mono;
 
-public interface ClientService {
+public class DefaultClientService implements ClientService {
 
-  Mono<CreateClientResponse> createClient(CreateClientRequest request);
+  @Override
+  public Mono<CreateClientResponse> createClient(CreateClientRequest request) {
+    return null;
+  }
 }
