@@ -1,22 +1,52 @@
 package com.demidrolll.pet.bank.domain.client.service;
 
-import com.demidrolll.pet.bank.domain.client.api.ClientRequest;
-import com.demidrolll.pet.bank.domain.client.api.ClientResponse;
-import com.demidrolll.pet.bank.domain.client.api.ClientServiceGrpc.ClientServiceImplBase;
-import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
+import com.demidrolll.pet.bank.domain.client.api.CreateClientRequest;
+import com.demidrolll.pet.bank.domain.client.api.CreateClientResponse;
+import com.demidrolll.pet.bank.domain.client.api.Result;
+import com.demidrolll.pet.bank.domain.client.model.Sex;
+import com.demidrolll.pet.bank.domain.client.repository.ClientRepository;
+import com.demidrolll.pet.bank.domain.client.repository.model.Client;
+import com.demidrolll.pet.bank.domain.client.repository.model.PersonalData;
+import java.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
-@GrpcService
-public class DefaultClientService extends ClientServiceImplBase {
+@Service
+public class DefaultClientService implements ClientService {
+
+  private final TransactionalClientService transactionalService;
+  private final Logger logger = LoggerFactory.getLogger(DefaultClientService.class);
+
+  public DefaultClientService(TransactionalClientService transactionalService) {
+    this.transactionalService = transactionalService;
+  }
 
   @Override
-  public void hello(ClientRequest request, StreamObserver<ClientResponse> responseObserver) {
-    String greeting = "Hello, "
-        + request.getFirstName()
-        + " "
-        + request.getLastName();
-
-    responseObserver.onNext(ClientResponse.newBuilder().setGreeting(greeting).build());
-    responseObserver.onCompleted();
+  public Mono<CreateClientResponse> create(CreateClientRequest request) {
+    return Mono
+        .fromCallable(() -> {
+          var client = new Client();
+          var personalData = new PersonalData();
+          personalData.setFirstName(request.getFirstName());
+          personalData.setLastName(request.getLastName());
+          personalData.setMiddleName(request.getMiddleName());
+          personalData.setSex(Sex.valueOf(request.getSex().name()));
+          personalData.setBirthDate(LocalDate.ofEpochDay(request.getBirthDate()));
+          client.setPersonalData(personalData);
+          return client;
+        })
+        .flatMap(client -> Mono
+            .fromCallable(() -> transactionalService.save(client))
+            .subscribeOn(Schedulers.boundedElastic())
+        )
+        .map(client -> Result.SUCCESS)
+        .onErrorResume(ex -> {
+          logger.error("Error while creating user", ex);
+          return Mono.just(Result.FAIL);
+        })
+        .map(result -> CreateClientResponse.newBuilder().setResult(result).build());
   }
 }
