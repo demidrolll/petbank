@@ -1,6 +1,10 @@
 scalar Date
 
 type Query {
+    stub: Boolean
+}
+
+type Mutation {
     createClient(request: CreateClientRequest!): CreateClientResponse
 }
 

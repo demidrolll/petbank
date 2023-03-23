@@ -8,8 +8,10 @@ import com.demidrolll.pet.bank.gateway.web.model.CreateClientResponse;
 import com.demidrolll.pet.bank.gateway.web.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+@Service
 public class DefaultClientService implements ClientService {
 
   private final ClientServiceFutureStub clientServiceStub;
@@ -24,16 +26,17 @@ public class DefaultClientService implements ClientService {
 
   @Override
   public Mono<CreateClientResponse> createClient(CreateClientRequest request) {
-    var stubRequest = com.demidrolll.pet.bank.domain.client.api.CreateClientRequest.newBuilder()
-        .setFirstName(request.firstName())
-        .setLastName(request.lastName())
-        .setMiddleName(request.middleName())
-        .setBirthDate(request.birthDate().toEpochDay())
-        .setSex(Sex.valueOf(request.sex().name()))
-        .build();
-
-    return callbackHandler.execute(clientServiceStub.create(stubRequest))
-        .map(response -> new CreateClientResponse(Result.SUCCESS))
+    return Mono
+        .fromCallable(() -> com.demidrolll.pet.bank.domain.client.api.CreateClientRequest.newBuilder()
+            .setFirstName(request.firstName())
+            .setLastName(request.lastName())
+            .setMiddleName(request.middleName())
+            .setBirthDate(request.birthDate().toEpochDay())
+            .setSex(Sex.valueOf(request.sex().name()))
+            .build()
+        )
+        .flatMap(stubRequest -> callbackHandler.execute(clientServiceStub.create(stubRequest)))
+        .map(response -> new CreateClientResponse(Result.valueOf(response.getResult().name())))
         .onErrorResume(ex -> {
           logger.error("Error while creating client", ex);
           return Mono.just(new CreateClientResponse(Result.FAIL));
