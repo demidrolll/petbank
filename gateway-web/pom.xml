@@ -12,15 +12,6 @@
   <artifactId>gateway-web</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>gateway-web</name>
-  <properties>
-    <java.version>17</java.version>
-    <grpc.configuration.version>2.14.0.RELEASE</grpc.configuration.version>
-    <grpc.version>1.51.0</grpc.version>
-    <protobuf.protoc.version>3.22.1</protobuf.protoc.version>
-    <maven.plugin.os.version>1.7.1</maven.plugin.os.version>
-    <maven.plugin.protobuf.version>0.6.1</maven.plugin.protobuf.version>
-    <jakarta.annotation.version>1.3.5</jakarta.annotation.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -34,6 +25,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-graphql</artifactId>
     </dependency>
+    <dependency>
+      <artifactId>graphql-java-extended-scalars</artifactId>
+      <groupId>com.graphql-java</groupId>
+      <version>${graphql.scalars.version}</version>
+    </dependency>
+
 
     <dependency>
       <groupId>jakarta.annotation</groupId>
@@ -51,6 +48,16 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <properties>
+    <java.version>17</java.version>
+    <grpc.configuration.version>2.14.0.RELEASE</grpc.configuration.version>
+    <grpc.version>1.51.0</grpc.version>
+    <protobuf.protoc.version>3.22.1</protobuf.protoc.version>
+    <maven.plugin.os.version>1.7.1</maven.plugin.os.version>
+    <maven.plugin.protobuf.version>0.6.1</maven.plugin.protobuf.version>
+    <jakarta.annotation.version>1.3.5</jakarta.annotation.version>
+    <graphql.scalars.version>20.0</graphql.scalars.version>
+  </properties>
 
   <build>
     <extensions>
