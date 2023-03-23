@@ -1,2 +1,9 @@
 server:
   port: 8090
+
+grpc:
+  client:
+    client-grpc-server:
+      address: "localhost:8080"
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
