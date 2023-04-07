@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:8001/petbank
+    username: admin
+    password: 12345678
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog.xml

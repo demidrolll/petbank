@@ -3,6 +3,18 @@ grpc:
     port: 8080
 
 spring:
-  h2:
-    console:
-      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:8001/petbank
+    username: admin
+    password: 12345678
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 10
+  jpa:
+    database: postgresql
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
