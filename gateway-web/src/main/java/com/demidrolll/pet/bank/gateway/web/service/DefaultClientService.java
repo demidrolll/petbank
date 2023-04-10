@@ -6,6 +6,7 @@ import com.demidrolll.pet.bank.gateway.web.grpc.ListenableFutureCallbackHandler;
 import com.demidrolll.pet.bank.gateway.web.model.CreateClientRequest;
 import com.demidrolll.pet.bank.gateway.web.model.CreateClientResponse;
 import com.demidrolll.pet.bank.gateway.web.model.Result;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class DefaultClientService implements ClientService {
         .fromCallable(() -> com.demidrolll.pet.bank.domain.client.api.CreateClientRequest.newBuilder()
             .setFirstName(request.firstName())
             .setLastName(request.lastName())
-            .setMiddleName(request.middleName())
+            .setMiddleName(Optional.ofNullable(request.middleName()).orElse(""))
             .setBirthDate(request.birthDate().toEpochDay())
             .setSex(Sex.valueOf(request.sex().name()))
             .build()

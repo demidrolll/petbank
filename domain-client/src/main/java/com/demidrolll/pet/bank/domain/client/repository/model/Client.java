@@ -16,8 +16,8 @@ public class Client {
 
   @Id
   @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  @SequenceGenerator(name = "client_id_seq")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_id_seq")
+  @SequenceGenerator(name = "client_id_seq", sequenceName = "client_id_seq", allocationSize = 1)
   private Long id;
 
   @OneToOne

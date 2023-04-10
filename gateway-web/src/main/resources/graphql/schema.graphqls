@@ -13,7 +13,7 @@ input CreateClientRequest {
     lastName: String!
     middleName: String
     sex: Sex!
-    birthDate: Date
+    birthDate: Date!
 }
 
 type CreateClientResponse {

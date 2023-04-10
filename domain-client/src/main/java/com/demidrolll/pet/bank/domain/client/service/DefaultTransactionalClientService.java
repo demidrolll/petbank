@@ -1,6 +1,7 @@
 package com.demidrolll.pet.bank.domain.client.service;
 
 import com.demidrolll.pet.bank.domain.client.repository.ClientRepository;
+import com.demidrolll.pet.bank.domain.client.repository.PersonalDataRepository;
 import com.demidrolll.pet.bank.domain.client.repository.model.Client;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -10,13 +11,17 @@ import org.springframework.stereotype.Service;
 public class DefaultTransactionalClientService implements TransactionalClientService {
 
   private final ClientRepository clientRepository;
+  private final PersonalDataRepository personalDataRepository;
 
-  public DefaultTransactionalClientService(ClientRepository clientRepository) {
+  public DefaultTransactionalClientService(ClientRepository clientRepository,
+      PersonalDataRepository personalDataRepository) {
     this.clientRepository = clientRepository;
+    this.personalDataRepository = personalDataRepository;
   }
 
   @Override
   public boolean save(Client client) {
+    personalDataRepository.save(client.getPersonalData());
     clientRepository.save(client);
     return true;
   }

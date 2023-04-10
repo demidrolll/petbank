@@ -20,8 +20,8 @@ public class PersonalData {
 
   @Id
   @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  @SequenceGenerator(name = "personal_data_id_seq")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personal_data_id_seq")
+  @SequenceGenerator(name = "personal_data_id_seq", sequenceName = "personal_data_id_seq", allocationSize = 1)
   private Long id;
 
   @Column(name = "first_name")
