@@ -13,6 +13,7 @@
     <module>domain-client</module>
     <module>gateway-web</module>
     <module>migration-postgres</module>
+    <module>notification</module>
   </modules>
 
 </project>
