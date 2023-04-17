@@ -3,6 +3,9 @@ grpc:
     port: 8080
 
 spring:
+  kafka:
+    bootstrap-servers: "127.0.0.1:9092"
+
   datasource:
     url: jdbc:postgresql://localhost:8001/petbank
     username: admin
@@ -18,3 +21,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+notification:
+  mail:
+    topic: petbank-mail-notification

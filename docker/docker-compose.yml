@@ -1,29 +1,59 @@
-version: "2"
+version: "3.8"
 
 services:
+  mail:
+    image: rnwood/smtp4dev:3.2.0-ci20221023104
+    ports:
+      - "8002:143"
+      - "8003:25"
+      - "8004:80"
+    volumes:
+      - mail_data:/var/lib/smtp4dev/data
+
+  postgres:
+    image: postgres:alpine3.17
+    ports:
+      - "8001:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=petbank
+    restart: always
+
   zookeeper:
-    image: zookeeper:3.8
+    image: bitnami/zookeeper:3.8
     ports:
       - "8005:2181"
     volumes:
-      - "zookeeper_data:/bitnami"
+      - zookeeper_data:/var/lib/zookeeper/data
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
     image: bitnami/kafka:3.4
     ports:
       - "9092:9092"
     volumes:
-      - "kafka_data:/bitnami"
+      - kafka_data:/var/lib/kafka/data
     environment:
+      - KAFKA_BROKER_ID=1
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LOG_ROLL_HOURS=1
     depends_on:
       - zookeeper
 
 volumes:
+  mail_data:
+    driver: local
+  postgres_data:
+    driver: local
   zookeeper_data:
+    driver: local
+  zookeeper_log:
     driver: local
   kafka_data:
     driver: local

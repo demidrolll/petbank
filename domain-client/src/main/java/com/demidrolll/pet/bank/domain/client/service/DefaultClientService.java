@@ -4,7 +4,6 @@ import com.demidrolll.pet.bank.domain.client.api.CreateClientRequest;
 import com.demidrolll.pet.bank.domain.client.api.CreateClientResponse;
 import com.demidrolll.pet.bank.domain.client.api.Result;
 import com.demidrolll.pet.bank.domain.client.model.Sex;
-import com.demidrolll.pet.bank.domain.client.repository.ClientRepository;
 import com.demidrolll.pet.bank.domain.client.repository.model.Client;
 import com.demidrolll.pet.bank.domain.client.repository.model.PersonalData;
 import java.time.LocalDate;
@@ -18,10 +17,13 @@ import reactor.core.scheduler.Schedulers;
 public class DefaultClientService implements ClientService {
 
   private final TransactionalClientService transactionalService;
+  private final ClientNotificationService notificationService;
   private final Logger logger = LoggerFactory.getLogger(DefaultClientService.class);
 
-  public DefaultClientService(TransactionalClientService transactionalService) {
+  public DefaultClientService(TransactionalClientService transactionalService,
+      ClientNotificationService notificationService) {
     this.transactionalService = transactionalService;
+    this.notificationService = notificationService;
   }
 
   @Override
@@ -42,6 +44,7 @@ public class DefaultClientService implements ClientService {
             .fromCallable(() -> transactionalService.save(client))
             .subscribeOn(Schedulers.boundedElastic())
         )
+        .delayUntil(client -> notificationService.sendWelcomeEmail(client.getId()))
         .map(client -> Result.SUCCESS)
         .onErrorResume(ex -> {
           logger.error("Error while creating user", ex);

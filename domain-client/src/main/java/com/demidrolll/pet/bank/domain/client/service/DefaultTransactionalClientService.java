@@ -20,9 +20,8 @@ public class DefaultTransactionalClientService implements TransactionalClientSer
   }
 
   @Override
-  public boolean save(Client client) {
+  public Client save(Client client) {
     personalDataRepository.save(client.getPersonalData());
-    clientRepository.save(client);
-    return true;
+    return clientRepository.save(client);
   }
 }

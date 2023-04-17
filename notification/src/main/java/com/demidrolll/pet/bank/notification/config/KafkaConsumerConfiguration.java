@@ -2,8 +2,6 @@ package com.demidrolll.pet.bank.notification.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,11 +12,10 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaAdmin;
 
 @EnableKafka
 @Configuration
-public class KafkaConfiguration {
+public class KafkaConsumerConfiguration {
 
   @Value(value = "${spring.kafka.bootstrap-servers}")
   private String bootstrapAddress;
@@ -26,17 +23,17 @@ public class KafkaConfiguration {
   @Value(value = "${notification.mail.topic}")
   private String mailTopicName;
 
-  @Bean
-  public KafkaAdmin kafkaAdmin() {
-    Map<String, Object> configs = new HashMap<>();
-    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    return new KafkaAdmin(configs);
-  }
-
-  @Bean
-  public NewTopic mailTopic() {
-    return new NewTopic(mailTopicName, 1, (short) 1);
-  }
+//  @Bean
+//  public KafkaAdmin kafkaAdmin() {
+//    Map<String, Object> configs = new HashMap<>();
+//    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+//    return new KafkaAdmin(configs);
+//  }
+//
+//  @Bean
+//  public NewTopic mailTopic() {
+//    return new NewTopic(mailTopicName, 1, (short) 1);
+//  }
 
   @Bean
   public ConsumerFactory<String, String> consumerFactory() {
@@ -55,7 +52,7 @@ public class KafkaConfiguration {
     return factory;
   }
 
-  @KafkaListener(topics = "mailTopicName", groupId = "foo")
+  @KafkaListener(topics = "petbank-mail-notification", groupId = "notification")
   public void listenMailNotification(String message) {
     System.out.println("Received Message: " + message);
   }

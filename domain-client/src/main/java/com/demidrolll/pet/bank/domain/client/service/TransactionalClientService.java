@@ -4,5 +4,5 @@ import com.demidrolll.pet.bank.domain.client.repository.model.Client;
 
 public interface TransactionalClientService {
 
-  boolean save(Client client);
+  Client save(Client client);
 }
