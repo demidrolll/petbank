@@ -35,6 +35,7 @@ public class DefaultClientNotificationService implements ClientNotificationServi
                 mailTopicName,
                 new PetBankEmailNotification(
                     clientId,
+                    "client@gmail.com",
                     "subject",
                     "Welcome to PetBank, ${FIRST_NAME}",
                     Map.of("FIRST_NAME", personalData.getFirstName()),

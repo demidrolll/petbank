@@ -51,6 +51,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<groupId>org.springframework.boot</groupId>
+		</dependency>
+
 	</dependencies>
 	<groupId>com.demidrolll.pet.bank</groupId>
 	<modelVersion>4.0.0</modelVersion>

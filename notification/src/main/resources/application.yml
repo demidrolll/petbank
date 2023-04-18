@@ -1,10 +1,18 @@
 notification:
   mail:
     topic: petbank-mail-notification
+    sender: noreply@petbank.com
 
 spring:
   kafka:
     bootstrap-servers: "127.0.0.1:9092"
-  json:
-    trusted:
-      packages: java.util, java.lang, com.demidrolll.pet.bank.notification.api
+
+  mail:
+    debug: true
+    host: 127.0.0.1
+    port: 8003
+    # username=<login user to smtp server>
+    # password=<login password to smtp server>
+    properties.mail.smtp:
+      auth: false
+      starttls.enable: false
