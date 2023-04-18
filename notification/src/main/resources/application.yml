@@ -5,3 +5,6 @@ notification:
 spring:
   kafka:
     bootstrap-servers: "127.0.0.1:9092"
+  json:
+    trusted:
+      packages: java.util, java.lang, com.demidrolll.pet.bank.notification.api

@@ -2,6 +2,10 @@ package com.demidrolll.pet.bank.domain.client.service;
 
 import com.demidrolll.pet.bank.domain.client.repository.ClientRepository;
 import com.demidrolll.pet.bank.domain.client.repository.model.Client;
+import com.demidrolll.pet.bank.notification.api.PetBankEmailNotification;
+import com.demidrolll.pet.bank.notification.api.PetBankNotification;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -10,12 +14,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class DefaultClientNotificationService implements ClientNotificationService {
 
-  private final KafkaTemplate<String, String> kafkaTemplate;
+  private final KafkaTemplate<String, PetBankNotification> kafkaTemplate;
   private final ClientRepository clientRepository;
   @Value(value = "${notification.mail.topic}")
   private String mailTopicName;
 
-  public DefaultClientNotificationService(KafkaTemplate<String, String> kafkaTemplate,
+  public DefaultClientNotificationService(KafkaTemplate<String, PetBankNotification> kafkaTemplate,
       ClientRepository clientRepository) {
     this.kafkaTemplate = kafkaTemplate;
     this.clientRepository = clientRepository;
@@ -29,7 +33,13 @@ public class DefaultClientNotificationService implements ClientNotificationServi
         .flatMap(personalData -> Mono.fromFuture(
             kafkaTemplate.send(
                 mailTopicName,
-                "Welcome to PetBank, " + personalData.getFirstName()
+                new PetBankEmailNotification(
+                    clientId,
+                    "subject",
+                    "Welcome to PetBank, ${FIRST_NAME}",
+                    Map.of("FIRST_NAME", personalData.getFirstName()),
+                    List.of()
+                )
             )
         ))
         .map(result -> true)

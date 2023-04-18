@@ -12,16 +12,6 @@
   <artifactId>domain-client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>domain-client</name>
-  <properties>
-    <java.version>17</java.version>
-    <grpc.version>1.51.0</grpc.version>
-    <grpc.configuration.version>2.14.0.RELEASE</grpc.configuration.version>
-    <jakarta.annotation.version>1.3.5</jakarta.annotation.version>
-    <protobuf.protoc.version>3.22.1</protobuf.protoc.version>
-    <maven.plugin.os.version>1.7.1</maven.plugin.os.version>
-    <maven.plugin.protobuf.version>0.6.1</maven.plugin.protobuf.version>
-    <reactor.version>3.5.3</reactor.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -76,11 +66,36 @@
     </dependency>
 
     <dependency>
+      <artifactId>jackson-databind</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!--PetBank api-->
+    <dependency>
+      <artifactId>notification-api</artifactId>
+      <groupId>com.demidrolll.pet.bank</groupId>
+      <scope>compile</scope>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <properties>
+    <java.version>17</java.version>
+    <grpc.version>1.51.0</grpc.version>
+    <grpc.configuration.version>2.14.0.RELEASE</grpc.configuration.version>
+    <jakarta.annotation.version>1.3.5</jakarta.annotation.version>
+    <protobuf.protoc.version>3.22.1</protobuf.protoc.version>
+    <maven.plugin.os.version>1.7.1</maven.plugin.os.version>
+    <maven.plugin.protobuf.version>0.6.1</maven.plugin.protobuf.version>
+    <reactor.version>3.5.3</reactor.version>
+    <jackson.version>2.14.2</jackson.version>
+  </properties>
 
   <build>
     <extensions>

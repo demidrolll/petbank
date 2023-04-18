@@ -1,4 +1,4 @@
-package com.demidrolll.pet.bank.domain.client.config;
+package com.demidrolll.pet.bank.notification.config;
 
 import java.util.HashMap;
 import java.util.Map;

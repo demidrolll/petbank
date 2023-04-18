@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>notification-api</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+    </plugins>
+  </build>
+  <groupId>com.demidrolll.pet.bank</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <name>notification-api</name>
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>3.0.5</version> <!-- lookup parent from repository -->
+  </parent>
+  <properties>
+    <java.version>17</java.version>
+  </properties>
+
+  <version>0.0.1-SNAPSHOT</version>
+
+</project>

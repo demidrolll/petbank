@@ -14,6 +14,7 @@
     <module>gateway-web</module>
     <module>migration-postgres</module>
     <module>notification</module>
+    <module>notification-api</module>
   </modules>
 
 </project>
