@@ -10,12 +10,24 @@ services:
     volumes:
       - mail_data:/var/lib/smtp4dev/data
 
-  postgres:
+  postgres_master:
     image: postgres:alpine3.17
     ports:
       - "8001:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - c:/docker/data/postgres_master_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=petbank
+    restart: always
+
+  postgres_slave:
+    image: postgres:alpine3.17
+    ports:
+      - "8006:5432"
+    volumes:
+      - c:/docker/data/postgres_slave_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=12345678
@@ -48,8 +60,6 @@ services:
 
 volumes:
   mail_data:
-    driver: local
-  postgres_data:
     driver: local
   zookeeper_data:
     driver: local

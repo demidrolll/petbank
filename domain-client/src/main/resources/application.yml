@@ -7,13 +7,23 @@ spring:
     bootstrap-servers: "127.0.0.1:9092"
 
   datasource:
-    url: jdbc:postgresql://localhost:8001/petbank
-    username: admin
-    password: 12345678
-    driver-class-name: org.postgresql.Driver
-    hikari:
+    master:
+      jdbcUrl: jdbc:postgresql://localhost:8001/petbank
+      username: admin
+      password: 12345678
+      driver-class-name: org.postgresql.Driver
       connectionTimeout: 20000
       maximumPoolSize: 10
+
+    slave:
+      url: jdbc:postgresql://localhost:8006/petbank
+      username: admin
+      password: 12345678
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        connectionTimeout: 20000
+        maximumPoolSize: 10
+
   jpa:
     database: postgresql
     show-sql: true
