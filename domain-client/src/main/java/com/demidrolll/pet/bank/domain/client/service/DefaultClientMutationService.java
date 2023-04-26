@@ -14,13 +14,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 @Service
-public class DefaultClientService implements ClientService {
+public class DefaultClientMutationService implements ClientMutationService {
 
   private final TransactionalClientService transactionalService;
   private final ClientNotificationService notificationService;
-  private final Logger logger = LoggerFactory.getLogger(DefaultClientService.class);
+  private final Logger logger = LoggerFactory.getLogger(DefaultClientMutationService.class);
 
-  public DefaultClientService(TransactionalClientService transactionalService,
+  public DefaultClientMutationService(TransactionalClientService transactionalService,
       ClientNotificationService notificationService) {
     this.transactionalService = transactionalService;
     this.notificationService = notificationService;

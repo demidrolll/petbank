@@ -1,13 +1,14 @@
 package com.demidrolll.pet.bank.domain.client.service;
 
+import com.demidrolll.pet.bank.domain.client.config.TransactionManager;
 import com.demidrolll.pet.bank.domain.client.repository.ClientRepository;
 import com.demidrolll.pet.bank.domain.client.repository.PersonalDataRepository;
 import com.demidrolll.pet.bank.domain.client.repository.model.Client;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(transactionManager = TransactionManager.MASTER_BEAN)
 public class DefaultTransactionalClientService implements TransactionalClientService {
 
   private final ClientRepository clientRepository;

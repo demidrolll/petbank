@@ -1,7 +1,5 @@
 package com.demidrolll.pet.bank.gateway.web.model;
 
-public enum Result {
-  SUCCESS,
-  FAIL,
-  NO_DATA
+public record GetClientByIdRequest(Long id) {
+
 }

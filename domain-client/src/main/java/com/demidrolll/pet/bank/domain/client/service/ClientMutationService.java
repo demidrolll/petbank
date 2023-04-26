@@ -4,7 +4,7 @@ import com.demidrolll.pet.bank.domain.client.api.CreateClientRequest;
 import com.demidrolll.pet.bank.domain.client.api.CreateClientResponse;
 import reactor.core.publisher.Mono;
 
-public interface ClientService {
+public interface ClientMutationService {
 
   Mono<CreateClientResponse> create(CreateClientRequest request);
 }

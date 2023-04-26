@@ -16,13 +16,12 @@ spring:
       maximumPoolSize: 10
 
     slave:
-      url: jdbc:postgresql://localhost:8006/petbank
+      jdbcUrl: jdbc:postgresql://localhost:8006/petbank
       username: admin
       password: 12345678
       driver-class-name: org.postgresql.Driver
-      hikari:
-        connectionTimeout: 20000
-        maximumPoolSize: 10
+      connectionTimeout: 20000
+      maximumPoolSize: 10
 
   jpa:
     database: postgresql

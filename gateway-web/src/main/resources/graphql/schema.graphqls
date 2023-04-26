@@ -1,7 +1,23 @@
 scalar Date
+scalar Long
 
 type Query {
-    stub: Boolean
+    getClientById(request: GetClientByIdRequest!): GetClientByIdResponse
+}
+
+input GetClientByIdRequest {
+    id: Long
+}
+
+type GetClientByIdResponse {
+    result: Result!
+    data: GetClientByIdData
+}
+
+type GetClientByIdData {
+    firstName: String
+    lastName: String
+    middleName: String
 }
 
 type Mutation {
@@ -23,6 +39,7 @@ type CreateClientResponse {
 enum Result {
     SUCCESS
     FAIL
+    NO_DATA
 }
 
 enum Sex {

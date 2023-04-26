@@ -5,6 +5,9 @@ import com.demidrolll.pet.bank.domain.client.api.Sex;
 import com.demidrolll.pet.bank.gateway.web.grpc.ListenableFutureCallbackHandler;
 import com.demidrolll.pet.bank.gateway.web.model.CreateClientRequest;
 import com.demidrolll.pet.bank.gateway.web.model.CreateClientResponse;
+import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdData;
+import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdRequest;
+import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdResponse;
 import com.demidrolll.pet.bank.gateway.web.model.Result;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -41,6 +44,30 @@ public class DefaultClientService implements ClientService {
         .onErrorResume(ex -> {
           logger.error("Error while creating client", ex);
           return Mono.just(new CreateClientResponse(Result.FAIL));
+        });
+  }
+
+  @Override
+  public Mono<GetClientByIdResponse> getClientById(GetClientByIdRequest request) {
+    return Mono
+        .fromCallable(() -> com.demidrolll.pet.bank.domain.client.api.GetClientRequest.newBuilder()
+            .setId(request.id())
+            .build()
+        )
+        .flatMap(stubRequest -> callbackHandler.execute(clientServiceStub.getById(stubRequest)))
+        .map(response -> new GetClientByIdResponse(
+                Result.SUCCESS,
+                new GetClientByIdData(
+                    response.getFirstName(),
+                    response.getLastName(),
+                    response.getMiddleName()
+                )
+            )
+        )
+        .switchIfEmpty(Mono.fromCallable(() -> new GetClientByIdResponse(Result.NO_DATA, null)))
+        .onErrorResume(ex -> {
+          logger.error("Error while fetching client with id: {}", request.id(), ex);
+          return Mono.just(new GetClientByIdResponse(Result.FAIL, null));
         });
   }
 }
