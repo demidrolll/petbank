@@ -8,3 +8,10 @@ grpc:
       negotiationType: PLAINTEXT
       enableKeepAlive: true
       keepAliveWithoutCalls: true
+
+spring:
+  data:
+    redis:
+      client-type: lettuce
+      host: localhost
+      port: 8007
