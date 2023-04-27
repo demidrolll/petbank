@@ -8,24 +8,32 @@ import com.demidrolll.pet.bank.gateway.web.model.CreateClientResponse;
 import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdData;
 import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdRequest;
 import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdResponse;
+import com.demidrolll.pet.bank.gateway.web.model.LoginRequest;
+import com.demidrolll.pet.bank.gateway.web.model.LoginResponse;
 import com.demidrolll.pet.bank.gateway.web.model.Result;
+import com.demidrolll.pet.bank.gateway.web.model.UserSession;
+import java.time.Duration;
 import java.util.Optional;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 public class DefaultClientService implements ClientService {
 
+  private final ReactiveRedisTemplate<String, Object> redisTemplate;
   private final ClientServiceFutureStub clientServiceStub;
   private final ListenableFutureCallbackHandler callbackHandler;
   private final Logger logger = LoggerFactory.getLogger(DefaultClientService.class);
 
   public DefaultClientService(ClientServiceFutureStub clientServiceStub,
-      ListenableFutureCallbackHandler callbackHandler) {
+      ListenableFutureCallbackHandler callbackHandler, ReactiveRedisTemplate<String, Object> redisTemplate) {
     this.clientServiceStub = clientServiceStub;
     this.callbackHandler = callbackHandler;
+    this.redisTemplate = redisTemplate;
   }
 
   @Override
@@ -68,6 +76,22 @@ public class DefaultClientService implements ClientService {
         .onErrorResume(ex -> {
           logger.error("Error while fetching client with id: {}", request.id(), ex);
           return Mono.just(new GetClientByIdResponse(Result.FAIL, null));
+        });
+  }
+
+  @Override
+  public Mono<LoginResponse> login(LoginRequest request) {
+    return redisTemplate.opsForValue()
+        .get(request.userId().toString())
+        .switchIfEmpty(
+            Mono.fromCallable(() -> new UserSession(UUID.randomUUID().toString()))
+                .delayUntil(value ->
+                    redisTemplate.opsForValue().set(request.userId().toString(), value, Duration.ofMinutes(1))
+                )
+        )
+        .map(value -> {
+          UserSession session = (UserSession) value;
+          return new LoginResponse(session.id());
         });
   }
 }

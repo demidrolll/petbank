@@ -22,6 +22,15 @@ type GetClientByIdData {
 
 type Mutation {
     createClient(request: CreateClientRequest!): CreateClientResponse
+    login(request: LoginRequest!): LoginResponse
+}
+
+input LoginRequest {
+    userId: Long
+}
+
+type LoginResponse {
+    sessionId: String
 }
 
 input CreateClientRequest {

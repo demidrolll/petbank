@@ -4,6 +4,8 @@ import com.demidrolll.pet.bank.gateway.web.model.CreateClientRequest;
 import com.demidrolll.pet.bank.gateway.web.model.CreateClientResponse;
 import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdRequest;
 import com.demidrolll.pet.bank.gateway.web.model.GetClientByIdResponse;
+import com.demidrolll.pet.bank.gateway.web.model.LoginRequest;
+import com.demidrolll.pet.bank.gateway.web.model.LoginResponse;
 import com.demidrolll.pet.bank.gateway.web.service.ClientService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -28,5 +30,10 @@ public class ClientController {
   @QueryMapping("getClientById")
   public Mono<GetClientByIdResponse> getClientById(@Argument("request") GetClientByIdRequest request) {
     return clientService.getClientById(request);
+  }
+
+  @MutationMapping("login")
+  public Mono<LoginResponse> login(@Argument("request") LoginRequest request) {
+    return clientService.login(request);
   }
 }
